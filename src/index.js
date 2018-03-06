@@ -12,17 +12,34 @@ function Square(props) {
 
 class Board extends React.Component {
 
-  renderSquare(i) {
-    return (
+  renderSquare() {
+    var squares=[];
+    for (let i=0;i<9;i++){
+    squares.push(
       <Square 
         value={this.props.squares[i]} 
         onClick={() => this.props.onClick(i)}
       />
-    ); //passa 2 props a square: value (dei dati, value i dell'array squares di board) e onClick (funct per aggiornare lo state chiamabile da Square)
-
+     //passa 2 props a square: value (dei dati, value i dell'array squares di board) e onClick (funct per aggiornare lo state chiamabile da Square)
+     )
+    }
+    return squares;
   }
 
   render() {
+    
+    let test=this.renderSquare();
+    console.log(test);
+      return(
+        <div>
+        <div className="board-row">
+          {test}
+        </div>
+        </div>
+        )
+    }
+  }
+    /*
     return (
       <div>
         <div className="board-row">
@@ -42,8 +59,8 @@ class Board extends React.Component {
         </div>
       </div>
     );
-  }
-}
+    */
+  
 
 class Game extends React.Component {
   constructor(props) {
@@ -90,18 +107,16 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     const moves = history.map((step, move) => {
-    const isBold = move === history.length-1 ?
-        true :
-        false ;
+    const openBold = move === history.length-1 ?
+        'bold' :
+        null ;
       const desc = move ?
         'Go to move # ' + move + ' {' + toRowCol(step.actualMove) +'}' :
         'Go to game start';    
       return (
-      
         <li key={move}> 
-          {isBold}
-          <button onClick={() => this.jumpTo(move)}>
-          {desc}</button>
+          <button className={openBold} onClick={() => this.jumpTo(move)}>
+           {desc}</button>
         </li>
       );
     });

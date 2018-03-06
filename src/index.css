@@ -17,6 +17,11 @@ ol, ul {
   margin-bottom: 10px;
 }
 
+.bold {
+   font-size: 24px;
+  font-weight: bold;
+}
+
 .square {
   background: #fff;
   border: 1px solid #999;
