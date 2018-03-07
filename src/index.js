@@ -81,8 +81,21 @@ class Game extends React.Component {
     })
   }
 
+  invertHistory(){
+    let invertHistory=[];
+    console.log(this.state.history.length);
+    for (let i=this.state.history.length-1; i>-1; i--){
+      invertHistory.push(this.state.history[i]);
+    }
+    console.log(invertHistory);
+    return invertHistory;
+  }
+
   toggleAsc(){
-     this.state.isAsc ? this.state.isAsc.setState(true) : this.state.isAsc.setState(false);
+     this.state.isAsc ? this.setState({isAsc: false}) : this.setState({isAsc: true});
+     //console.log(this.state.history);
+     //this.invertHistory();
+     this.setState({history: this.invertHistory()});
   }
 
   render() {
@@ -172,11 +185,9 @@ function toRowCol(value){
       result='0, '+ value; 
     }
     else if(value<6){
-      console.log(value);
       result='1, '+ (value-3); 
     }
     else {
-      console.log(value);
       result='2, '+ (value-6); 
     }
     return result;
