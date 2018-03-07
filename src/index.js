@@ -12,55 +12,35 @@ function Square(props) {
 
 class Board extends React.Component {
 
+
   renderSquare() {
     var squares=[];
-    for (let i=0;i<9;i++){
-    squares.push(
-      <Square 
-        value={this.props.squares[i]} 
-        onClick={() => this.props.onClick(i)}
-      />
+    for (let i=0;i<3;i++){
+      squares.push(<div className="board-row"></div>);
+      for (let j=0;j<3;j++){
+        let n = singleIndex(i, j);
+        squares.push(
+          <Square 
+            value={this.props.squares[n]} 
+            onClick={() => this.props.onClick(n)}
+          />
+        )
+      }
      //passa 2 props a square: value (dei dati, value i dell'array squares di board) e onClick (funct per aggiornare lo state chiamabile da Square)
-     )
     }
     return squares;
   }
 
   render() {
     
-    let test=this.renderSquare();
-    console.log(test);
+    let square=this.renderSquare();
       return(
         <div>
-        <div className="board-row">
-          {test}
-        </div>
+          {square}
         </div>
         )
     }
   }
-    /*
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
-    */
-  
 
 class Game extends React.Component {
   constructor(props) {
@@ -71,6 +51,7 @@ class Game extends React.Component {
         squares: Array(9).fill(null),
       }],
       xIsNext: true,
+      isAsc: true,
       stepNumber: 0,
     }
   }
@@ -100,7 +81,9 @@ class Game extends React.Component {
     })
   }
 
-  
+  toggleAsc(){
+     this.state.isAsc ? this.state.isAsc.setState(true) : this.state.isAsc.setState(false);
+  }
 
   render() {
     const history = this.state.history;
@@ -128,6 +111,14 @@ class Game extends React.Component {
       status = 'Next player: ' + (this.state.xIsNext? 'X' : 'O');
     }
 
+    let toggle;
+    if (this.state.isAsc) {
+      toggle = "Descending";
+    }
+    else {
+      toggle = "Ascending";
+    }
+
     return (
       <div className="game">
         <div className="game-board">
@@ -138,6 +129,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
+          <button onClick={() => this.toggleAsc()}>{toggle}</button>
           <ol>{moves}</ol>
         </div>
       </div>
@@ -186,6 +178,26 @@ function toRowCol(value){
     else {
       console.log(value);
       result='2, '+ (value-6); 
+    }
+    return result;
+  }
+
+function singleIndex(i, j){
+    let result;
+    if (i===0){
+      if (j===0){ result=0; }
+      else if (j===1) { result = 1; }
+      else { result = 2; }
+    }
+    else if(i===1){
+      if (j===0){ result=3; }
+      else if (j===1) { result = 4; }
+      else { result = 5; }
+    }
+    else {
+      if (j===0){ result=6; }
+      else if (j===1) { result = 7; }
+      else { result = 8; }
     }
     return result;
   }
