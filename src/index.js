@@ -93,8 +93,6 @@ class Game extends React.Component {
 
   toggleAsc(){
      this.state.isAsc ? this.setState({isAsc: false}) : this.setState({isAsc: true});
-     //console.log(this.state.history);
-     //this.invertHistory();
      this.setState({history: this.invertHistory()});
   }
 
@@ -103,12 +101,22 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     const moves = history.map((step, move) => {
+      console.log(move);
     const openBold = move === history.length-1 ?
         'bold' :
         null ;
-      const desc = move ?
-        'Go to move # ' + move + ' {' + toRowCol(step.actualMove) +'}' :
-        'Go to game start';    
+    const desc = this.state.isAsc ? 
+        move ?
+          'Go to game start' :
+          'Go to move # ' + move + ' {' + toRowCol(step.actualMove) +'}' 
+       :
+        move ?
+         'Go to move # ' + move + ' {' + toRowCol(step.actualMove) +'}' :
+         'Go to game start' ;
+          
+     // const desc = move ?
+      //  'Go to move # ' + move + ' {' + toRowCol(step.actualMove) +'}' :
+      //  'Go to game start';    
       return (
         <li key={move}> 
           <button className={openBold} onClick={() => this.jumpTo(move)}>
