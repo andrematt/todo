@@ -87,7 +87,6 @@ class Game extends React.Component {
     for (let i=this.state.history.length-1; i>-1; i--){
       invertHistory.push(this.state.history[i]);
     }
-    console.log(invertHistory);
     return invertHistory;
   }
 
@@ -101,22 +100,18 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     const moves = history.map((step, move) => {
-      console.log(move);
     const openBold = move === history.length-1 ?
         'bold' :
         null ;
     const desc = this.state.isAsc ? 
-        move ?
+        move === 0 ?
           'Go to game start' :
           'Go to move # ' + move + ' {' + toRowCol(step.actualMove) +'}' 
        :
-        move ?
-         'Go to move # ' + move + ' {' + toRowCol(step.actualMove) +'}' :
-         'Go to game start' ;
-          
-     // const desc = move ?
-      //  'Go to move # ' + move + ' {' + toRowCol(step.actualMove) +'}' :
-      //  'Go to game start';    
+       move === history.length-1? 
+         'Go to game start' :
+         'Go to move # ' + move + ' {' + toRowCol(step.actualMove) +'}' ;
+
       return (
         <li key={move}> 
           <button className={openBold} onClick={() => this.jumpTo(move)}>
@@ -127,7 +122,7 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-      status = 'Winner: ' + winner;
+      status = 'Winner: ' + winner.player;
     } else {
       status = 'Next player: ' + (this.state.xIsNext? 'X' : 'O');
     }
@@ -181,7 +176,11 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      let result = {
+        player: squares[a],
+        move: lines[i],
+      }
+      return result; 
     }
   }
   return null;
